@@ -1,14 +1,16 @@
 package com.example.BlogPlat.User;
 
+import com.example.BlogPlat.Token.Token;
+import com.example.BlogPlat.Token.TokenRepo;
 import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @AllArgsConstructor
 public class UserService {
     private UserRepo repo;
+    private TokenRepo token;
 
     public boolean signup(User user) {
         try {
@@ -18,5 +20,23 @@ public class UserService {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    public boolean login(User user) {
+        if (!repo.existsByUsername(user.getUsername())) {
+            return false;
+        }
+
+        User foundUser = repo.findByUsername(user.getUsername());
+
+        if (BCrypt.checkpw(user.getPassword(), foundUser.getPassword())) {
+            if (!token.existsByUser(foundUser)) {
+                token.save(new Token(foundUser));
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

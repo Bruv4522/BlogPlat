@@ -20,6 +20,7 @@ public class User {
     @Column(unique = true, nullable = false)
     private String password;
     @OneToOne
+    @JoinColumn(name = "token")
     private Token token;
 
     public User(String username, String password) {

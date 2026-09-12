@@ -3,6 +3,7 @@ package com.example.BlogPlat.Token;
 import com.example.BlogPlat.User.User;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
@@ -12,12 +13,18 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @OneToOne(mappedBy = "user_id")
+    @OneToOne(mappedBy = "token")
     private User user;
     private Instant created = Instant.now();
-    private Instant expires = created.plus(7, ChronoUnit.DAYS);
+    private Instant expires = created.plus(7, ChronoUnit.SECONDS);
+
+    public Token(User user) {
+        this.user = user;
+        user.setToken(this);
+    }
 }
