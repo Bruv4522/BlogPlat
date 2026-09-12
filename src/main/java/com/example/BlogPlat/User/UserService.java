@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class UserService {
-    private UserRepo repo;
-    private TokenRepo token;
+    private final UserRepo repo;
+    private final TokenRepo token;
 
     public boolean signup(User user) {
         try {
