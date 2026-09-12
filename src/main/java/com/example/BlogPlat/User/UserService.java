@@ -2,7 +2,10 @@ package com.example.BlogPlat.User;
 
 import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+@Service
 @AllArgsConstructor
 public class UserService {
     private UserRepo repo;
