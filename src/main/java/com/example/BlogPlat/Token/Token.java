@@ -1,9 +1,7 @@
 package com.example.BlogPlat.Token;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.BlogPlat.User.User;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +16,8 @@ public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @OneToOne(mappedBy = "user_id")
+    private User user;
     private Instant created = Instant.now();
     private Instant expires = created.plus(7, ChronoUnit.DAYS);
 }

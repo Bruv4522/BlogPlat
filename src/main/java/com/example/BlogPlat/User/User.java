@@ -1,5 +1,6 @@
 package com.example.BlogPlat.User;
 
+import com.example.BlogPlat.Token.Token;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,8 @@ public class User {
     private String username;
     @Column(unique = true, nullable = false)
     private String password;
+    @OneToOne
+    private Token token;
 
     public User(String username, String password) {
         this.username = username;
