@@ -28,9 +28,18 @@ public class UserController {
     @PostMapping("/login")
     public LoginRes login(@RequestBody User user) {
         if (service.login(user)) {
-            return new LoginRes("Login successful", tokenRepo.findByUserUsername(user.getUsername()).getId());
+            return new LoginRes("Login successful", tokenRepo.findByUserUsername(user.getUsername()).orElseThrow().getId());
         } else {
             return new LoginRes("Invalid credentials", null);
+        }
+    }
+
+    @PostMapping("/logout")
+    public Message logout(@RequestBody User user) {
+        if (service.logout(user)) {
+            return new Message("Successfully logged out");
+        } else {
+            return new Message("Failed to log out");
         }
     }
 }

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class UserService {
@@ -35,6 +37,22 @@ public class UserService {
             }
 
             return true;
+        }
+
+        return false;
+    }
+
+    public boolean logout(User user) {
+        Optional<Token> foundToken = token.findByUserUsername(user.getUsername());
+
+        if (foundToken.isPresent()) {
+            User foundUser = repo.findByUsername(user.getUsername());
+
+            if (BCrypt.checkpw(user.getPassword(), foundUser.getPassword())) {
+                user.setToken(null);
+                token.delete(foundToken.get());
+                return true;
+            }
         }
 
         return false;
